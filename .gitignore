@@ -1,1 +1,5 @@
 tools
+*.pdf
+*.out
+*.tst
+*.cmp
