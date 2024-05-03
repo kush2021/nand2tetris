@@ -29,7 +29,7 @@ class Parser:
     Args:
       file (TextIO): The assembly file opened in read mode.
     """
-    self.file = file
+    self._file = file
     self.currentCommand = None
 
   def hasMoreCommands(self) -> bool:
@@ -41,7 +41,7 @@ class Parser:
       file from the current line. Note that whitespace and comments do not
       count.
     """
-    return utils.peek(self.file)
+    return utils.peek(self._file)
 
   def advance(self) -> None:
     """
@@ -49,7 +49,7 @@ class Parser:
     works when `hasMoreCommands` is true.
     """
     if self.hasMoreCommands():
-      self.currentCommand = self.file.readline()
+      self.currentCommand = self._file.readline()
     else:
       self.currentCommand = None
 
@@ -89,8 +89,9 @@ class Parser:
     Returns a string representing the `dest` mnemonic. Only works for C
     commands.
     """
-    if self.commandType() == utils.COMMAND_TYPE.C_COMMAND:
-      return self.currentCommand[:self.currentCommand.index('=')].strip()
+    i = self.currentCommand.find('=')
+    if self.commandType() == utils.COMMAND_TYPE.C_COMMAND and i > 0:
+      return self.currentCommand[:i].strip()
 
   def comp(self) -> str:
     """

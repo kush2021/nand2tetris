@@ -1,5 +1,6 @@
 from ..src.parser import Parser
 from ..src.utils import COMMAND_TYPE
+from ..src.code import Code
 import unittest
 
 FILE_LEN = 24
@@ -113,6 +114,19 @@ class ParserTest(unittest.TestCase):
   def advanceUntilEnd(self):
     for _ in range(FILE_LEN):
       self.parser.advance()
+
+
+class CodeTest(unittest.TestCase):
+  code = Code()
+
+  def testDest(self):
+    self.assertEqual("111", self.code.dest("AMD"))
+
+  def testJump(self):
+    self.assertEqual("111", self.code.jump("JMP"))
+
+  def testComp(self):
+    self.assertEqual("1010101", self.code.comp("D|M"))
 
 
 if __name__ == "__main__":
