@@ -92,6 +92,7 @@ class Parser:
     i = self.currentCommand.find('=')
     if self.commandType() == utils.COMMAND_TYPE.C_COMMAND and i > 0:
       return self.currentCommand[:i].strip()
+    return ""
 
   def comp(self) -> str:
     """
@@ -101,7 +102,7 @@ class Parser:
     commands.
     """
     if self.commandType() == utils.COMMAND_TYPE.C_COMMAND:
-      i = self.currentCommand.index('=') + 1
+      i = self.currentCommand.find('=') + 1
       j = self.currentCommand.find(';')
       return self.currentCommand[i:j].strip()
 
@@ -113,4 +114,7 @@ class Parser:
     commands.
     """
     if self.commandType() == utils.COMMAND_TYPE.C_COMMAND:
-      return self.currentCommand[self.currentCommand.find(';') + 1:].strip()
+      i = self.currentCommand.find(';')
+      if i != -1:
+        return self.currentCommand[i + 1:].strip()
+      return ""

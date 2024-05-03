@@ -20,6 +20,7 @@ class Code:
   """
 
   _destConversions = {
+      "": "000",
       "null": "000",
       "M": "001",
       "D": "010",
@@ -31,6 +32,7 @@ class Code:
   }
 
   _jumpConversions = {
+      "": "000",
       "null": "000",
       "JGT": "001",
       "JEQ": "010",
@@ -42,6 +44,7 @@ class Code:
   }
 
   _compConversions = {
+      "": "0000000",
       "0": "0101010",
       "1": "0111111",
       "-1": "0111010",
