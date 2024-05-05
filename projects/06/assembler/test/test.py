@@ -1,6 +1,7 @@
 from ..src.parser import Parser
 from ..src.utils import COMMAND_TYPE
 from ..src.code import Code
+from ..src.symbolTable import SymbolTable
 import unittest
 
 FILE_LEN = 24
@@ -91,7 +92,7 @@ class ParserTest(unittest.TestCase):
 
   def testNoDest(self):
     self.parser.advance()
-    self.assertIsNone(self.parser.dest())
+    self.assertEqual("", self.parser.dest())
 
   def testComp(self):
     self.parser.advance()
@@ -127,6 +128,25 @@ class CodeTest(unittest.TestCase):
 
   def testComp(self):
     self.assertEqual("1010101", self.code.comp("D|M"))
+
+
+class SymbolTableTest(unittest.TestCase):
+  symbolTable = SymbolTable()
+
+  def testAddEntry(self):
+    self.symbolTable.addEntry("TEST", 100)
+    self.assertEqual(self.symbolTable._symbolToAddress["TEST"], 100)
+
+  def testContains(self):
+    self.symbolTable.addEntry("TEST", 100)
+    self.assertTrue(self.symbolTable.contains("TEST"))
+
+  def testNotContains(self):
+    self.assertFalse(self.symbolTable.contains("NON EXISTENT"))
+
+  def testGetAddress(self):
+    self.symbolTable._symbolToAddress["TEST"] = 100
+    self.assertEqual(100, self.symbolTable.getAddress("TEST"))
 
 
 if __name__ == "__main__":
