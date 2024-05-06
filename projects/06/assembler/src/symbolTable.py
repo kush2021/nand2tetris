@@ -7,9 +7,7 @@ their numeric addresses.
 
 
 class SymbolTable:
-  """
-  A symbol table for the assembler.
-
+  """ A symbol table for the assembler.
   Utilizes a hash map to maintain links between symbols and their memory
   addresses.
 

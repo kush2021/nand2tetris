@@ -116,6 +116,11 @@ class ParserTest(unittest.TestCase):
     for _ in range(FILE_LEN):
       self.parser.advance()
 
+  def reset(self):
+    self.parser.advance()
+    self.parser.reset()
+    self.assertIsNone(self.parser._file.readline())
+
 
 class CodeTest(unittest.TestCase):
   code = Code()
@@ -134,11 +139,15 @@ class SymbolTableTest(unittest.TestCase):
   symbolTable = SymbolTable()
 
   def testAddEntry(self):
-    self.symbolTable.addEntry("TEST", 100)
-    self.assertEqual(self.symbolTable._symbolToAddress["TEST"], 100)
+    self.symbolTable.addEntry("TEST", 16)
+    self.assertEqual(self.symbolTable._symbolToAddress["TEST"], 16)
+
+  def testAddEntrySpecific(self):
+    self.symbolTable.addEntry("TEST", 12)
+    self.assertEqual(self.symbolTable.getAddress("TEST"), 12)
 
   def testContains(self):
-    self.symbolTable.addEntry("TEST", 100)
+    self.symbolTable.addEntry("TEST", 16)
     self.assertTrue(self.symbolTable.contains("TEST"))
 
   def testNotContains(self):

@@ -61,11 +61,13 @@ class Parser:
     """
     if not self.currentCommand:
       return utils.COMMAND_TYPE.NON_COMMAND
-    if self.currentCommand[0] == '@':
+    elif self.currentCommand.strip() == "":
+      return utils.COMMAND_TYPE.NON_COMMAND
+    elif self.currentCommand.strip()[0] == '@':
       return utils.COMMAND_TYPE.A_COMMAND
     elif self.currentCommand[0] == '(':
       return utils.COMMAND_TYPE.L_COMMAND
-    elif self.currentCommand.strip() == "" or self.currentCommand[0] == '/':
+    elif self.currentCommand.strip()[0] == '/':
       return utils.COMMAND_TYPE.NON_COMMAND
     return utils.COMMAND_TYPE.C_COMMAND
 
@@ -76,11 +78,14 @@ class Parser:
     Returns a string representing the symbol of the current command. Only works
     for A or L commands.
     """
+    if not self.currentCommand:
+      return
     commandType = self.commandType()
+    line = self.currentCommand.strip()
     if commandType == utils.COMMAND_TYPE.A_COMMAND:
-      return self.currentCommand[1:].strip()
+      return line[1:].strip()
     elif commandType == utils.COMMAND_TYPE.L_COMMAND:
-      return self.currentCommand.strip()[1:-1]
+      return line[1:-1]
 
   def dest(self) -> str:
     """
@@ -118,3 +123,9 @@ class Parser:
       if i != -1:
         return self.currentCommand[i + 1:].strip()
       return ""
+
+  def reset(self) -> None:
+    """
+    Resets the file pointer to the beginning.
+    """
+    self._file.seek(0)
