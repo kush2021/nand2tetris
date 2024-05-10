@@ -17,7 +17,6 @@ class Parser:
   provides access to its components.
 
   Attributes:
-    filename (str): The filename/path of the assembly language file.
     file (TextIO): The text file that has been opened for reading.
     currentCommand (str): The current command of the assembly file.
   """
