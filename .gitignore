@@ -3,4 +3,5 @@ tools
 *.out
 *.tst
 *.cmp
+.idea
 __pycache__
