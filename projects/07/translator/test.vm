@@ -9,17 +9,17 @@ function mult 2
 label loop
     push constant 0
     push local 1
-    Eq
+    eq
     // if j = 0 goto end
     if-goto end
     push local 0
     push argument 0
-    Add
+    add
     // sum = sum + x
     pop local 0
     push local 1
     push constant 1
-    Sub
+    sub
     // j = j -1
     pop local 1
     goto loop
@@ -27,3 +27,4 @@ label end
     push local 0
     // return sum
     return
+    call

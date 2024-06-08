@@ -7,7 +7,6 @@ find_package(Boost 1.85.0 COMPONENTS algorithm)
 include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(hack_assembler main.cpp parser.h parser.cpp
-    commandType.cpp
     commandType.h
     code.h
     code.cpp
@@ -21,7 +20,6 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 enable_testing()
 add_executable(assembler_test tests.cpp parser.h parser.cpp
-    commandType.cpp
     commandType.h
     code.h
     code.cpp
