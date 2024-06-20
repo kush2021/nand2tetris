@@ -25,7 +25,7 @@ namespace translator {
     /**
      * Constructor for the class.
      *
-     * @param fileName (std::string): The file name/path for the `.vm` program.
+     * @param fileName (`const std::string`): The file name/path for the `.vm` program.
      */
     explicit parser(const std::string &fileName);
 

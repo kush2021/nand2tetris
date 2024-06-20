@@ -54,15 +54,66 @@ namespace translator {
     }
   }
 
-  void codeWriter::writePushPop(const commandType &command, const std::string_view &segment, const int &index) {
-    if (command == commandType::Push && segment == "constant") {
+  void codeWriter::writePushPop(const commandType &command, const std::string_view &segment, const int &index,
+                                const std::string_view &fileName) {
+    if (command == commandType::Push) {
+      this->writePush(segment, index, fileName);
+    } else {
+      this->writePop(segment, index, fileName);
+    }
+  }
+
+  void codeWriter::writePush(const std::string_view &segment, const int &index, const std::string_view &fileName) {
+    if (segment == "constant") {
       output << "@" << index << std::endl;
       output << "D=A" << std::endl;
-      output << "@SP" << std::endl;
+    } else if (segment == "static" || segment == "temp") {
+      if (segment == "static") output << "@" << fileName << '.' << index << std::endl;
+      else output << "@" << (index + tempOffset) << std::endl;
+      output << "D=M" << std::endl;
+    } else if (segment == "pointer") {
+      if (index) output << "@THAT" << std::endl;
+      else output << "@THIS" << std::endl;
+      output << "D=M" << std::endl;
+    } else {
+      if (segment == "argument") output << "@ARG" << std::endl;
+      else if (segment == "this") output << "@THIS" << std::endl;
+      else if (segment == "that") output << "@THAT" << std::endl;
+      else output << "@LCL" << std::endl;
       output << "A=M" << std::endl;
-      output << "M=D" << std::endl;
-      output << "@SP" << std::endl;
-      output << "M=M+1" << std::endl;
+      if (index) {
+        for (int i = 0; i < index; i++) output << "A=A+1" << std::endl;
+      }
+      output << "D=M" << std::endl;
     }
+    output << "@SP" << std::endl;
+    output << "A=M" << std::endl;
+    output << "M=D" << std::endl;
+    output << "@SP" << std::endl;
+    output << "M=M+1" << std::endl;
+  }
+
+  void codeWriter::writePop(const std::string_view &segment, const int &index, const std::string_view &fileName) {
+    output << "@SP" << std::endl;
+    output << "A=M-1" << std::endl;
+    output << "D=M" << std::endl;
+    output << "@SP" << std::endl;
+    output << "M=M-1" << std::endl;
+    if (segment == "static") output << "@" << fileName << '.' << index << std::endl;
+    else if (segment == "temp") output << "@" << (index + tempOffset) << std::endl;
+    else if (segment == "pointer") {
+      if (index) output << "@THAT" << std::endl;
+      else output << "@THIS" << std::endl;
+    } else {
+      if (segment == "argument") output << "@ARG" << std::endl;
+      else if (segment == "this") output << "@THIS" << std::endl;
+      else if (segment == "that") output << "@THAT" << std::endl;
+      else output << "@LCL" << std::endl;
+      output << "A=M" << std::endl;
+      if (index) {
+        for (int i = 0; i < index; i++) output << "A=A+1" << std::endl;
+      }
+    }
+    output << "M=D" << std::endl;
   }
 }
