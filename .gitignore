@@ -5,3 +5,4 @@ tools
 *.cmp
 .idea
 __pycache__
+cmake-build-debug

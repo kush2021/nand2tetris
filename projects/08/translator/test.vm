@@ -1,0 +1,30 @@
+// 2 local variables
+function mult 2
+    push constant 0
+    // sum = 0
+    pop local 0
+    push argument 1
+    // j = y
+    pop local 1
+label loop
+    push constant 0
+    push local 1
+    eq
+    // if j = 0 goto end
+    if-goto end
+    push local 0
+    push argument 0
+    add
+    // sum = sum + x
+    pop local 0
+    push local 1
+    push constant 1
+    sub
+    // j = j -1
+    pop local 1
+    goto loop
+label end
+    push local 0
+    // return sum
+    return
+    call
